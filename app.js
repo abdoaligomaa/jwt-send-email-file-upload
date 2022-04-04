@@ -1,5 +1,10 @@
+const exp = require('constants')
 const express=require('express')
 const app=express()
+
+const jwt=require('jsonwebtoken')
+
+app.use(express.json())
 
 const posts=[
     {
@@ -16,6 +21,18 @@ const posts=[
 ]
 
 app.get('/posts',(req,res)=>{
+    res.json(posts)
+})
+
+app.post('/login',(req,res)=>{
+    //you should auth user using bcrypt before generate jwt 
+    const user=req.body.username
+    const token =jwt.sign(user,'abdo ali gomaa')
+    
+    res.json({token})
+
+
+
     res.json(posts)
 })
 
