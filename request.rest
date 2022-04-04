@@ -1,8 +1,9 @@
 GET http://localhost:3000/posts
+Authorization: eyJhbGciOiJIUzI1NiJ9.YWJkbyBhbGkgMQ.48qPnv2m65g2DQngIEDb8jShbYOr5m0QEefPjFeA2GU
 ###
 POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "username":"abdo ali gomaa"
+    "username":"abdo ali 1"
 }

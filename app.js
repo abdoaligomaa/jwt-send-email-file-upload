@@ -1,4 +1,3 @@
-const exp = require('constants')
 const express=require('express')
 const app=express()
 
@@ -20,8 +19,11 @@ const posts=[
     }
 ]
 
-app.get('/posts',(req,res)=>{
-    res.json(posts)
+app.get('/posts',vierfyToken,(req,res)=>{
+    const post=posts.filter((post)=>{
+        return post.username===req.user
+    })
+    res.json(post)
 })
 
 app.post('/login',(req,res)=>{
@@ -31,10 +33,15 @@ app.post('/login',(req,res)=>{
     
     res.json({token})
 
-
-
-    res.json(posts)
 })
+
+function vierfyToken(req,res,next){
+    const token=req.headers.authorization
+    const decoded=jwt.verify(token,'abdo ali gomaa')
+    req.user=decoded
+    console.log(decoded)
+    next()
+}
 
 app.listen(3000,console.log('server is listening to port 3000'))
 
