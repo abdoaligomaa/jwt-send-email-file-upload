@@ -28,7 +28,7 @@ app.get('/posts',vierfyToken,(req,res)=>{
 
 app.post('/login',(req,res)=>{
     //you should auth user using bcrypt before generate jwt 
-    const user=req.body.username
+    const user={name:req.body.username,pass:req.body.password}
     const token =jwt.sign(user,'abdo ali gomaa')
     
     res.json({token})

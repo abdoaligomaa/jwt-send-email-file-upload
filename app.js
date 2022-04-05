@@ -1,47 +1,44 @@
 const express=require('express')
 const app=express()
 
-const jwt=require('jsonwebtoken')
+const multer=require('multer')
+
 
 app.use(express.json())
 
-const posts=[
-    {
-        username:'abdo ali 1',
-        post:"post one"
+const storageOne=multer.diskStorage({
+    destination:function(req,file,cb){
+        cb(null,'./singleImages')
+
     },
-    {
-        username:'abdo ali 2',
-        post:"post two"
-    },{
-        username:'abdo ali 3',
-        post:"post three"
+    filename:(req,file,cb)=>{
+        cb(null,file.originalname)
     }
-]
+})
+const storageMult=multer.diskStorage({
+    destination:(req,file,cb)=>{
+        cb(null,'./multImages')
 
-app.get('/posts',vierfyToken,(req,res)=>{
-    const post=posts.filter((post)=>{
-        return post.username===req.user
-    })
-    res.json(post)
+    },
+    filename:(req,file,cb)=>{
+        cb(null,Date.now()+file.originalname)
+    }
 })
 
-app.post('/login',(req,res)=>{
-    //you should auth user using bcrypt before generate jwt 
-    const user=req.body.username
-    const token =jwt.sign(user,'abdo ali gomaa')
-    
-    res.json({token})
+const uploadOne=multer({storage:storageOne})
+const uploadMult=multer({storage:storageMult})
+const upload=multer({dest:"./images"})
 
+app.post('/singlFiles',uploadOne.single('image'),(req,res)=>{
+   console.log(req.file)
+   res.send('true')
 })
 
-function vierfyToken(req,res,next){
-    const token=req.headers.authorization
-    const decoded=jwt.verify(token,'abdo ali gomaa')
-    req.user=decoded
-    console.log(decoded)
-    next()
-}
+app.post('/multFiles',uploadMult.fields([{name:"image1", maxCount: 1},{name:"image2", maxCount: 1}]),(req,res)=>{
+    console.log(req.files)
+    res.send('true')
+
+})
 
 app.listen(3000,console.log('server is listening to port 3000'))
 
