@@ -2,7 +2,7 @@ const express=require('express')
 const app=express()
 
 const sendGrid=require('@sendgrid/mail')
-sendGrid.setApiKey('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')
+sendGrid.setApiKey('PUT YOUR KEY TO SEND EMAIL')
 
 app.use(express.json())
 app.get('/',(req,res)=>{
